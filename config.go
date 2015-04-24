@@ -25,11 +25,7 @@ func ReadConfig(path string) *ConfigFile {
 	}
 
 	if conf.Default == nil {
-		conf.Default = []*columnDef{
-			&columnDef{"Accepted", "accepted"},
-			&columnDef{"Ready", "ready"},
-			&columnDef{"In Progress", "in progress"},
-		}
+		conf.Default = []*columnDef{}
 	}
 	return &conf
 }

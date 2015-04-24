@@ -26,7 +26,7 @@ type controller struct {
 }
 
 func NewController(client *stroopClient) *controller {
-	config := ReadConfig("$HOME/.strooprc")
+	config := ReadConfig("$HOME/.stroop.conf")
 
 	defs := config.Default
 	if def, ok := config.Repos[client.remote.GithubName()]; ok {
