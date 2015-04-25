@@ -11,19 +11,17 @@ type ConfigFile struct {
 }
 
 func ReadConfig(path string) *ConfigFile {
-	f, err := os.Open(os.ExpandEnv(path))
-	if err != nil {
-		return nil
-	}
-	defer f.Close()
-	dec := json.NewDecoder(f)
 	var conf ConfigFile
-	err = dec.Decode(&conf)
-	if err != nil {
-		log.Fatalf("Invalid config file: %#v", err)
-		return nil
+	f, err := os.Open(os.ExpandEnv(path))
+	defer f.Close()
+	if err == nil {
+		dec := json.NewDecoder(f)
+		err = dec.Decode(&conf)
+		if err != nil {
+			log.Fatalf("Invalid config file: %#v", err)
+			return nil
+		}
 	}
-
 	if conf.Default == nil {
 		conf.Default = []*columnDef{}
 	}

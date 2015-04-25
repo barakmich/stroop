@@ -59,6 +59,13 @@ func (c *column) viewName(i int) string {
 	return fmt.Sprintf("col-%s-%d", c.name, i)
 }
 
+func (c *column) CurrentIssue() (github.Issue, error) {
+	if c.selection >= len(c.issues) {
+		return github.Issue{}, fmt.Errorf("Invalid issue selection")
+	}
+	return c.issues[c.selection], nil
+}
+
 func (c *column) MoveUp(g *gocui.Gui) error {
 	if c.selection == -1 {
 		return nil

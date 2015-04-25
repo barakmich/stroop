@@ -3,9 +3,7 @@ package main
 import (
 	"errors"
 	"flag"
-	"fmt"
 	"os"
-	"strings"
 
 	"github.com/coreos/pkg/capnslog"
 	"github.com/jroimartin/gocui"
@@ -23,6 +21,8 @@ type controller struct {
 	debugOn        bool
 	statusleft     string
 	statusright    string
+	curComment     *commentView
+	mode           string
 }
 
 func NewController(client *stroopClient) *controller {
@@ -109,9 +109,7 @@ func (c *controller) layout(g *gocui.Gui) error {
 }
 
 func (c *controller) statusBar(width int) []byte {
-	n := width - len(c.statusleft) - len(c.statusright) - 2
-	status := fmt.Sprint(c.statusleft, strings.Repeat(" ", n), c.statusright)
-	return []byte(status)
+	return []byte(LeftRightCenter(c.statusleft, c.statusright, "", width-2))
 }
 
 func (c *controller) RefreshColumns() {

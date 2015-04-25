@@ -82,6 +82,28 @@ func (c *stroopClient) GetIssues() []github.Issue {
 	return issues
 }
 
+type issueComment struct {
+	issue    github.Issue
+	comments []github.IssueComment
+}
+
+func (c *stroopClient) GetCommentsForIssue(i github.Issue) *issueComment {
+	out := &issueComment{
+		issue: i,
+	}
+	opts := &github.IssueListCommentsOptions{
+		ListOptions: github.ListOptions{
+			PerPage: 100,
+		},
+	}
+	cs, _, err := c.github.Issues.ListComments(c.remote.User, c.remote.Repo, *i.Number, opts)
+	if err != nil {
+		log.Errorf("%s", err.Error())
+	}
+	out.comments = cs
+	return out
+}
+
 type Remote struct {
 	LocalName string
 	User      string
